@@ -7,7 +7,7 @@ def call(String OpenshiftcredintialsID, String imageName, String openshiftServer
 
         withCredentials([file(credentialsId: "${OpenshiftcredintialsID}", variable: 'KUBECONFIG_FILE')]) {
         sh """
-            export KUBECONFIG=${KUBECONFIG_FILE}
+            export KUBECONFIG=${KUBECONFIG_FILE} && oc login ${openshiftServer} --token=${SERVICE_ACCOUNT_TOKEN}
             oc project ${openshiftProject}  // Specify your project name
             oc apply -f java-deployment.yml
             oc apply -f java-service.yml 
