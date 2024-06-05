@@ -1,16 +1,17 @@
 #!/usr/bin/env groovy
 // OpenShiftCredentialsID 'Service Account Token'
-def call(String SERVICE_ACCOUNT_TOKEN, String imageName, String openshiftServer, String openshiftProject) {
+def call(String OpenshiftcredintialsID, String imageName, String openshiftServer, String openshiftProject) {
     
     // Update deployment configuration with new Docker Hub image tag
     sh "sed -i 's|image:.*|image: ${imageName}|g' java-deployment.yml"
 
+        withCredentials([file(credentialsId: "${OpenshiftcredintialsID}", variable: 'KUBECONFIG_FILE')]) {
         sh """
-            oc login ${openshiftServer} --token=${SERVICE_ACCOUNT_TOKEN} --insecure-skip-tls-verify
             oc project ${openshiftProject}  // Specify your project name
             oc apply -f java-deployment.yml
             oc apply -f java-service.yml 
         """
+    }
 }
 
 // #!/usr/bin/env groovy
