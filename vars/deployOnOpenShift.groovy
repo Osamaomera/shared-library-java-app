@@ -6,10 +6,10 @@ def call(String SERVICE_ACCOUNT_TOKEN, String imageName, String openshiftServer,
     sh "sed -i 's|image:.*|image: ${imageName}|g' java-deployment.yml"
 
         sh """
-            kubectl login ${openshiftServer} --token=${SERVICE_ACCOUNT_TOKEN}
-            kubectl project ${openshiftProject}  // Specify your project name
-            kubectl apply -f java-deployment.yml
-            kubectl apply -f java-service.yml 
+            oc login ${openshiftServer} --token=${SERVICE_ACCOUNT_TOKEN}
+            oc project ${openshiftProject}  // Specify your project name
+            oc apply -f java-deployment.yml
+            oc apply -f java-service.yml 
         """
 }
 
