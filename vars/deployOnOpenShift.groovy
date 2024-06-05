@@ -5,10 +5,9 @@ def call(String OpenshiftcredintialsID, String imageName, String openshiftServer
     // Update deployment configuration with new Docker Hub image tag
     sh "sed -i 's|image:.*|image: ${imageName}|g' java-deployment.yml"
 
-        withCredentials([file(credentialsId: "${OpenshiftcredintialsID}", variable: 'KUBECONFIG_FILE')]) {
+        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'openshift', namespace: 'osamaayman', restrictKubeConfigAccess: false, serverUrl: '') {
+    // some block
         sh """
-            export KUBECONFIG=${KUBECONFIG_FILE} && oc login ${openshiftServer} --token=${SERVICE_ACCOUNT_TOKEN}
-            oc project ${openshiftProject}  // Specify your project name
             oc apply -f java-deployment.yml
             oc apply -f java-service.yml 
         """
