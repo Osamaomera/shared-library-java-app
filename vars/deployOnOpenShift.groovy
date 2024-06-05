@@ -5,14 +5,12 @@ def call(String SERVICE_ACCOUNT_TOKEN, String imageName, String openshiftServer,
     // Update deployment configuration with new Docker Hub image tag
     sh "sed -i 's|image:.*|image: ${imageName}:${BUILD_NUMBER}|g' java-deployment.yml"
 
-        withCredentials([file(credentialsId: "${SERVICE_ACCOUNT_TOKEN}", variable: 'SERVICE_ACCOUNT_TOKEN')]) {
         sh """
             oc login ${openshiftServer} --token=${SERVICE_ACCOUNT_TOKEN}
             oc project ${openshiftProject}  // Specify your project name
             oc apply -f java-deployment.yml
             oc apply -f java-service.yml 
         """
-        }
 }
 
 // #!/usr/bin/env groovy
