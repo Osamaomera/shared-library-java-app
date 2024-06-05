@@ -5,8 +5,8 @@ def call(String OpenshiftcredintialsID, String imageName, String openshiftServer
     // Update deployment configuration with new Docker Hub image tag
     sh "sed -i 's|image:.*|image: ${imageName}|g' java-deployment.yml"
 
-        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'openshift', namespace: 'osamaayman', restrictKubeConfigAccess: false, serverUrl: '') {
-    // some block
+        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'openshift', namespace: 'osamaayman', restrictKubeConfigAccess: false, serverUrl: 'https://api.ocp-training.ivolve-test.com:6443') {
+            
         sh """
             oc apply -f java-deployment.yml
             oc apply -f java-service.yml 
